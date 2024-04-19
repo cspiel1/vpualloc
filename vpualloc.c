@@ -13,6 +13,33 @@
 #define PAGE_SIZE       (1 << PAGE_SHIFT)
 #define PAGE_ALIGN(addr) ALIGN(addr, PAGE_SIZE)
 
+static int vpu_init()
+{
+	VpuDecRetCode ret;
+
+	ret = VPU_DecLoad();
+
+	if (ret !=VPU_DEC_RET_SUCCESS) {
+		printf("ERROR: could not init VPU memory\n");
+		return ENOMEM;
+	}
+}
+
+
+static int vpu_uninit()
+{
+	VpuDecRetCode ret;
+
+	ret = VPU_DecUnLoad();
+	if (ret !=VPU_DEC_RET_SUCCESS) {
+		printf("ERROR: could not un-init VPU memory\n");
+		return EINVAL;
+	}
+
+	return 0;
+}
+
+
 static VpuMemDesc *vpu_alloc(int s)
 {
 	VpuMemDesc *mem;
@@ -72,6 +99,10 @@ int main(int argc, char *argv[])
 	if (n < 0)
 		n = -n;
 
+	int err = vpu_init();
+	if (err)
+		return err;
+
 	VpuMemDesc **mems = calloc(p, sizeof(VpuMemDesc*));
 	for (int i=0; i<p; ++i)
 		mems[i] = NULL;
@@ -84,6 +115,11 @@ int main(int argc, char *argv[])
 
 		mems[k] = vpu_alloc(rand() % s);
 	}
+
+
+	err = vpu_uninit();
+	if (err)
+		return err;
 
 	return 0;
 }
