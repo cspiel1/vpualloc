@@ -9,6 +9,8 @@
 #include <imx-mm/vpu/vpu_wrapper.h>
 
 #define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
+#define PAGE_SHIFT      12
+#define PAGE_SIZE       (1 << PAGE_SHIFT)
 #define PAGE_ALIGN(addr) ALIGN(addr, PAGE_SIZE)
 
 static VpuMemDesc *vpu_alloc(int s)
