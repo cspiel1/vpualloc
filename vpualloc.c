@@ -16,13 +16,37 @@
 static int vpu_init()
 {
 	VpuDecRetCode ret;
+	VpuVersionInfo version;
+	VpuWrapperVersionInfo wrapper_version;
 
 	ret = VPU_DecLoad();
-
-	if (ret !=VPU_DEC_RET_SUCCESS) {
-		printf("ERROR: could not init VPU memory\n");
+	if (ret != VPU_DEC_RET_SUCCESS) {
+		printf("ERROR: VPU_DecLoad failed: %d\n", ret);
 		return ENOMEM;
 	}
+
+	ret = VPU_DecGetVersionInfo(&version);
+	if (ret != VPU_DEC_RET_SUCCESS) {
+		printf("ERROR: VPU_DecGetVersionInfo fail: %d\n", ret);
+		return ENOMEM;
+	}
+
+	ret = VPU_DecGetWrapperVersionInfo(&wrapper_version);
+	if (ret != VPU_DEC_RET_SUCCESS) {
+		printf("ERROR: VPU_DecGetWrapperVersionInfo fail: %d", ret);
+		return ENOMEM;
+	}
+
+	printf("====== VPUDEC: on %s %s. ======\n",  __DATE__,__TIME__);
+	printf("\twrapper: %d.%d.%d (%s)\n",
+	       wrapper_version.nMajor, wrapper_version.nMinor,
+	       wrapper_version.nRelease,
+	       wrapper_version.pBinary ? wrapper_version.pBinary : "unknow");
+	printf("\tvpulib: %d.%d.%d\n",
+	       version.nLibMajor, version.nLibMinor, version.nLibRelease);
+	printf("\tfirmware: %d.%d.%d.%d\n",
+	       version.nFwMajor, version.nFwMinor, version.nFwRelease,
+	       version.nFwCode);
 }
 
 
