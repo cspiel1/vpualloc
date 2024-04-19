@@ -6,3 +6,9 @@ add_executable(vpualloc
 vpualloc.c)
 
 target_link_libraries(vpualloc fslvpuwrap)
+
+install(TARGETS vpualloc
+  RUNTIME
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+    COMPONENT Applications
+)
