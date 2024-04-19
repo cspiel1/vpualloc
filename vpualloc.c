@@ -74,10 +74,18 @@ static void vpu_free(VpuMemDesc *mem)
 }
 
 
+static void print_usage(const char *pname)
+{
+	printf("Usage:\n%s <#parallel> <#allocs> <size>\n", pname);
+}
+
+
 int main(int argc, char *argv[])
 {
-	if (argc < 4)
+	if (argc < 4) {
+		print_usage(argv[0]);
 		return EINVAL;
+	}
 
 	int p = atoi(argv[1]);
 	int n = atoi(argv[2]);
