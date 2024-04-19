@@ -6,7 +6,7 @@
 #include <sys/user.h>
 #include <linux/const.h>
 
-#include "vpu_wrapper.h"
+#include <imx-mm/vpu/vpu_wrapper.h>
 
 #define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
 #define PAGE_ALIGN(addr) ALIGN(addr, PAGE_SIZE)

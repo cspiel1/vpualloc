@@ -4,3 +4,5 @@ project(vpualloc)
 
 add_executable(vpualloc 
 vpualloc.c)
+
+target_link_libraries(vpualloc fslvpuwrap)
